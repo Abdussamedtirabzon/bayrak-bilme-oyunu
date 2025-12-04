@@ -1,0 +1,230 @@
+import 'package:flutter/material.dart';
+import 'dart:math';
+
+void main() => runApp(BayrakBilmeceApp());
+
+class BayrakBilmeceApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Bayrak Bilmece',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.indigo,
+        scaffoldBackgroundColor: Color(0xFFE8F0F8),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.indigo,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      home: BayrakEkrani(),
+    );
+  }
+}
+
+class BayrakEkrani extends StatefulWidget {
+  List<int> karisikSira = []; // Karışık gösterim sırası
+  int gosterilenIndex = -1;
+
+  BayrakEkrani({super.key}); // Sıradaki kaçıncı bayrak
+
+  @override
+  _BayrakEkraniState createState() => _BayrakEkraniState();
+}
+
+class _BayrakEkraniState extends State<BayrakEkrani> {
+  List<Map<String, String>> bayraklar = [
+    {"ulke": "Amerika Birleşik Devletleri", "resim": "assets/flags/abd.png"},
+    {"ulke": "Abhazya", "resim": "assets/flags/abhazya.png"},
+    {"ulke": "Afganistan", "resim": "assets/flags/afganistan.png"},
+    {"ulke": "Almanya", "resim": "assets/flags/almanya.png"},
+    {"ulke": "Arjantin", "resim": "assets/flags/arjantin.png"},
+    {"ulke": "Azerbeycan", "resim": "assets/flags/azerbaycan.png"},
+    {"ulke": "Birleşik Krallık", "resim": "assets/flags/birleşik krallık.png"},
+    {"ulke": "Brezilya", "resim": "assets/flags/brezilya.png"},
+    {"ulke": "Bulgaristan", "resim": "assets/flags/bulgaristan.png"},
+    {"ulke": "Canada", "resim": "assets/flags/Canada.png"},
+    {"ulke": "ÇİN", "resim": "assets/flags/cin.png"},
+    {"ulke": "Danimarka", "resim": "assets/flags/danimarka.png"},
+    {"ulke": "Endonezya", "resim": "assets/flags/endonezya.png"},
+    {"ulke": "Eritre", "resim": "assets/flags/Eritre.png"},
+    {"ulke": "Eswatini", "resim": "assets/flags/Eswatini.png"},
+    {"ulke": "Fildişi Sahili", "resim": "assets/flags/fildişi sahili.png"},
+    {"ulke": "Filipinler", "resim": "assets/flags/filipinler.png"},
+    {"ulke": "Filistin", "resim": "assets/flags/filistin.png"},
+    {"ulke": "Fransa", "resim": "assets/flags/fransa.png"},
+    {"ulke": "Gine", "resim": "assets/flags/gine.png"},
+    {"ulke": "Güney Kore", "resim": "assets/flags/güney kore.png"},
+    {"ulke": "Haiti", "resim": "assets/flags/haiti.png"},
+    {"ulke": "Hindistan", "resim": "assets/flags/hindistan.png"},
+    {"ulke": "Hollanda", "resim": "assets/flags/hollanda.png"},
+    {"ulke": "Irak", "resim": "assets/flags/ırak.png"},
+    {"ulke": "İran", "resim": "assets/flags/Iran.png"},
+    {"ulke": "İrlanda", "resim": "assets/flags/irlanda.png"},
+    {"ulke": "İspanya", "resim": "assets/flags/ispanya.png"},
+    {"ulke": "İsveç", "resim": "assets/flags/isveç.png"},
+    {"ulke": "İtalya", "resim": "assets/flags/italya.png"},
+    {"ulke": "Bebek Katili", "resim": "assets/flags/itrail.png"},
+    {"ulke": "Jameika", "resim": "assets/flags/Jamaika.png"},
+    {"ulke": "Japonya", "resim": "assets/flags/japonya.png"},
+    {"ulke": "Katar", "resim": "assets/flags/katar.png"},
+    {"ulke": "Kenya", "resim": "assets/flags/Kenya.png"},
+    {"ulke": "Kırgızistan", "resim": "assets/flags/kırgızistan.png"},
+    {
+      "ulke": "Kongo Cumhuriyeti",
+      "resim": "assets/flags/kongo cumhuriyeti.png",
+    },
+    {"ulke": "Kongo DC", "resim": "assets/flags/kongo dc.png"},
+    {"ulke": "Kosova", "resim": "assets/flags/Kosovo.png"},
+    {
+      "ulke": "Kuzey Kıbrıs Türk Cum.",
+      "resim": "assets/flags/kuzey kıbrıs türk cumhuriyeti.png",
+    },
+    {"ulke": "Libya", "resim": "assets/flags/libya.png"},
+    {"ulke": "Mali", "resim": "assets/flags/Mali.png"},
+    {"ulke": "Marşel Adaları", "resim": "assets/flags/marşel adaları.png"},
+    {"ulke": "Mısır", "resim": "assets/flags/mısır.png"},
+    {
+      "ulke": "Mikronezya Federal Dev.",
+      "resim": "assets/flags/mikronezya federal devletleri.png",
+    },
+    {"ulke": "Nepal", "resim": "assets/flags/Nepal.png"},
+    {"ulke": "Nijer", "resim": "assets/flags/Nijer.png"},
+    {"ulke": "Nijerya", "resim": "assets/flags/Nijerya.png"},
+    {"ulke": "Özbekistan", "resim": "assets/flags/özbekistan.png"},
+    {"ulke": "Pakistan", "resim": "assets/flags/Pakistan.png"},
+    {"ulke": "Panama", "resim": "assets/flags/Panama.png"},
+    {"ulke": "Paraguay", "resim": "assets/flags/Paraguay.png"},
+    {"ulke": "Peru", "resim": "assets/flags/Peru.png"},
+    {"ulke": "Romanya", "resim": "assets/flags/Romania.png"},
+    {"ulke": "Rusya", "resim": "assets/flags/Rusya.png"},
+    {
+      "ulke": "Sahra Demokratik Arap Cum.",
+      "resim": "assets/flags/sahra demokratik arap cumhuriyeti.png",
+    },
+    {"ulke": "Samoa", "resim": "assets/flags/Samoa.png"},
+    {"ulke": "Sierra Leone", "resim": "assets/flags/sierra_Leone.png"},
+    {"ulke": "Singapur", "resim": "assets/flags/Singapore.png"},
+    {"ulke": "Solomon Adaları", "resim": "assets/flags/Solomon adaları.png"},
+    {"ulke": "Sudan", "resim": "assets/flags/Sudan.png"},
+    {"ulke": "Suriye", "resim": "assets/flags/suriye.png"},
+    {"ulke": "Tacikistan", "resim": "assets/flags/tacikistan.png"},
+    {"ulke": "Togo", "resim": "assets/flags/togo.png"},
+    {"ulke": "Türkmenistan", "resim": "assets/flags/Turkmenistan.png"},
+    {"ulke": "Türkiye", "resim": "assets/flags/türkiye.png"},
+    {"ulke": "Uruguay", "resim": "assets/flags/Uruguay.png"},
+    {"ulke": "Vatikan", "resim": "assets/flags/Vatican.png"},
+    {"ulke": "Venezuella", "resim": "assets/flags/Venezuela.png"},
+    {"ulke": "Vietnam", "resim": "assets/flags/Vietnam.png"},
+    {"ulke": "Yeni Zelenda", "resim": "assets/flags/yeni zelanda.png"},
+  ];
+
+  int? secilenIndeks;
+  bool isimGoster = false;
+  List<int> karisikSira = []; // Karışık gösterim sırası
+  int gosterilenIndex = -1;
+
+  get ulkeIsminiGoster => null; // Sıradaki kaçıncı bayrak
+
+  void karisikListeOlustur() {
+    karisikSira = List.generate(bayraklar.length, (i) => i)..shuffle();
+    gosterilenIndex = -1;
+  }
+
+  void yeniBayrak() {
+    // Eğer ilk kez çalışıyorsa ya da tüm bayraklar gösterildiyse
+    if (karisikSira.isEmpty || gosterilenIndex >= karisikSira.length - 1) {
+      karisikListeOlustur();
+    }
+
+    // Sıradaki karışık indeksi al
+    gosterilenIndex++;
+    int yeniIndeks = karisikSira[gosterilenIndex];
+
+    // Güncelle
+    setState(() {
+      secilenIndeks = yeniIndeks;
+      isimGoster = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bayrak = secilenIndeks != null ? bayraklar[secilenIndeks!] : null;
+
+    return Scaffold(
+      appBar: AppBar(title: Text("🌍 Bayrak Bilmece Oyunu"), centerTitle: true),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (bayrak != null)
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 500),
+                  child: Container(
+                    key: ValueKey(bayrak["resim"]),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(bayrak["resim"]!, height: 200),
+                    ),
+                  ),
+                )
+              else
+                Text(
+                  "🎌 Oyuna başlamak için 'Yeni Bayrak' butonuna tıkla",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+              SizedBox(height: 30),
+              if (isimGoster && bayrak != null)
+                AnimatedOpacity(
+                  opacity: 1.0,
+                  duration: Duration(milliseconds: 500),
+                  child: Text(
+                    bayrak["ulke"]!,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo[700],
+                    ),
+                  ),
+                ),
+              SizedBox(height: 40),
+              ElevatedButton.icon(
+                onPressed: yeniBayrak,
+                icon: Icon(Icons.flag),
+                label: Text("Yeni Bayrak"),
+              ),
+              SizedBox(height: 15),
+              ElevatedButton.icon(
+                onPressed: ulkeIsminiGoster,
+                icon: Icon(Icons.visibility),
+                label: Text("Ülkeyi Göster"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
