@@ -1,4 +1,4 @@
-# flutter_deneme_app
+# bayrak bilme oynu
 
 A new Flutter project.
 
@@ -15,3 +15,5 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 # bayrak-bilme-oyunu
+
+-- Ticari amaç ile kullanılması yasakdır--
