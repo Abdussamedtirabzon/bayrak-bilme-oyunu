@@ -1,7 +1,7 @@
 # bayrak-bilme-oyunu
-ama kodlar Lib klasörünün içindedir 
+Ana kodlar Lib klasörünün içindedir 
 
-APK dosyası app-release.apk  
+APK dosyası app-release.apk  adındadır
 
 
 
